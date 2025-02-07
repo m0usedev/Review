@@ -1,29 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { OrbitProgress } from 'react-loading-indicators'
 import './App.css'
+import { useEffect, useState } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [appReady, setAppReady] = useState(false)
+
+  useEffect(() => {
+    window.electronStatus.initialCheck()
+    .then((data) => {
+      setAppReady(data)
+    })
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {
+        !appReady ? 
+          <OrbitProgress dense color="#3186cc" size="medium" text="" textColor="" />
+        :
+          <h1>Base de datos lista</h1>
+      }
+      
     </>
   )
 }
